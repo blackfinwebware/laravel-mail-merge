@@ -7,7 +7,7 @@
  
 This provides a facility to merge email templates with objects in your system to produce customized emails to 
 individuals or to definable groups. It differs from base Laravel email templating in that it enables you and/or your 
-users to maintain the email content for both repeatable event notification emails as well as for individualized group 
+users to maintain the email content from the UI in the browser for both repeatable event notification emails as well as for individualized group 
 announcements, and does so in a highly configurable way.
 
 ## Installation 
@@ -18,7 +18,8 @@ You can install the package via composer:
 composer require blackfinwebware/laravel-mail-merge
 ```
 
-###Migrations
+### Migrations
+
 You'll want to publish and run the migrations with:
 
 ```bash
@@ -26,7 +27,7 @@ php artisan vendor:publish --tag="laravel-mail-merge-migrations"
 php artisan migrate
 ```
 
-###Views
+### Views
 Optionally, if you'd like to customize the views, you can publish them using
 
 ```bash
@@ -35,7 +36,7 @@ php artisan vendor:publish --tag="laravel-mail-merge-views"
 
 Note that these provide a UI for your Email Templates -- https://yourapp.example.com/mailmerge/email-templates
 
-###Groups
+### Groups
 When preparing to send an email to a group of people, you'll want to first create and refine a Merge Distribution:
 
 ```bash
@@ -51,7 +52,7 @@ The nexus object name defined in this class will be used in an attempt to locate
 
 See below for a practical example.
 
-###Macro Expansions
+### Macro Expansions
 To define a set of macro expansions (or email template parameters and their substitutions), you'll want to first create a Macro 
 Expansion class.
 
@@ -62,7 +63,7 @@ This will create the class App\Mail\Merge\Macro\MyClassName.php. The namespace w
 namespace. You'll edit this class to define the set of macros that you want to use in your email template, and then
 explcitly how to expand those.
 
-###Config
+### Config
 These are the contents of the published config file. Tailor it to your app:
 
 ```php
@@ -201,7 +202,7 @@ echo $skeleton->echoPhrase('Hello, VendorName!');
 ```
 
 
-##Example
+## Example
 
 You can define an EmailTemplate named 'password_reset_request', where your message body might be similar to this:
 
@@ -236,7 +237,7 @@ You can then call the following method on the facade to produce and send the app
 `Mailmerge::composeAndSend('password_reset_request', $password_reset_request);`
 ## Advanced
 
-###Email Template Type Differentiation
+### Email Template Type Differentiation
 
 If you are sending out event-driven direct notifications to individual users as well as broadcast emails to groups, 
 it may help to separate these into different tables as the fields could be slightly different, and the roles that interact
