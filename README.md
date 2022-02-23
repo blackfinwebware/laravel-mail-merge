@@ -1,4 +1,4 @@
-# BlackfinWebware LaravelMailMerge
+# Blackfin Webware Laravel Mail Merge
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/blackfinwebware/laravel-mail-merge.svg?style=flat-square)](https://packagist.org/packages/blackfinwebware/laravel-mail-merge)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/blackfinwebware/laravel-mail-merge/run-tests?label=tests)](https://github.com/blackfinwebware/laravel-mail-merge/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -7,7 +7,7 @@
  
 This provides a facility to merge email templates with objects in your system to produce customized emails to 
 individuals or to definable groups. It differs from base Laravel email templating in that it enables you and/or your 
-users to maintain the email content from the UI in the browser for both repeatable event notification emails as well as for individualized group 
+users to maintain the email content for both repeatable event notification emails as well as for individualized group 
 announcements, and does so in a highly configurable way.
 
 ## Installation 
@@ -19,7 +19,6 @@ composer require blackfinwebware/laravel-mail-merge
 ```
 
 ### Migrations
-
 You'll want to publish and run the migrations with:
 
 ```bash
@@ -196,14 +195,6 @@ return [
 
 ## Usage
 
-```php
-$skeleton = new VendorName\Skeleton();
-echo $skeleton->echoPhrase('Hello, VendorName!');
-```
-
-
-## Example
-
 You can define an EmailTemplate named 'password_reset_request', where your message body might be similar to this:
 
 > This is an automated message from the <<app_name>> System and was triggered by a user action. Someone has requested to have the password reset for the account with the email address of <<password_reset_request_email>> and username <<member_username>>.
@@ -213,7 +204,7 @@ You can define an EmailTemplate named 'password_reset_request', where your messa
 
 And define in the config where to derive appropriate values for those general use macros:
 
-```
+```php
 $macros = ['general' => ['app_name' => env('APP_NAME', 'MyApp'),
                          'primary_contact_email' => 'joe_user@example.com'],
                          'password_reset_request' => App\Mail\Merge\Macro\PasswordResetRequestMacroExpansionGuide::class];
@@ -222,7 +213,7 @@ $macros = ['general' => ['app_name' => env('APP_NAME', 'MyApp'),
 And then within the linked Macro Expansion Guide, you'd define the macros and what they will expand to when the
 mailmerge is performed:
 
-```
+```php
 public function expansions(){
         $password_reset_link = url("/password_reset_request/reset/" . $this->objects['password_reset_request']->reset_access_token);
 
@@ -234,7 +225,10 @@ public function expansions(){
 
 You can then call the following method on the facade to produce and send the appropriately populated email:
 
-`Mailmerge::composeAndSend('password_reset_request', $password_reset_request);`
+```php
+Mailmerge::composeAndSend('password_reset_request', $password_reset_request);
+```
+
 ## Advanced
 
 ### Email Template Type Differentiation
@@ -277,9 +271,10 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [Tom Cowin](https://github.com/tcowin)
 - [All Contributors](../../contributors)
 
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
