@@ -14,14 +14,6 @@ class DummyConferenceRegistrants extends MergeDistribution
     protected $nexusObject = 'ConferenceRegistration';
 
     /**
-     * @return string
-     */
-    public function getNexusObjectName(): string
-    {
-        return $this->nexusObject;
-    }
-
-    /**
      * Returns an array or Collection of User objects that each have email and name attributes.
      *
      * @return Collection
@@ -43,7 +35,7 @@ class DummyConferenceRegistrants extends MergeDistribution
      * @param $user
      * @return object instance of nexus object
      */
-    public function getNexusForUser($user)
+    public function getNexusForUser($user): object
     {
         return ConferenceRegistration::where('conference_registrations.conference', 'Dummy Conference')
                                      ->where('conference_registrations.status', 'Paid in Full')

@@ -11,6 +11,16 @@ abstract class MergeDistribution
     protected $nexusObject = '';
 
     /**
+     * Return the nexus object name.
+     *
+     * @return string
+     */
+    public function getNexusObjectName(): string
+    {
+        return $this->nexusObject;
+    }
+
+    /**
      * Returns a Collection of User objects that each have email and name attributes.
      *
      * @return array
@@ -29,15 +39,6 @@ abstract class MergeDistribution
      */
     public function getNexusForUser($user): object
     {
-    }
-
-    /**
-     * Return the nexus object name.
-     *
-     * @return string
-     */
-    public function getNexusObjectName(): string
-    {
-        return $this->nexusObject;
+        return (object)null;
     }
 }
