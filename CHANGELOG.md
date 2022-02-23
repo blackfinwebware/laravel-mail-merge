@@ -2,6 +2,6 @@
 
 All notable changes to `:package_name` will be documented in this file.
 
-## 1.0.0 - 202X-XX-XX
+## 0.0.1beta - 2022-02-23
 
-- initial release
+- initial beta release

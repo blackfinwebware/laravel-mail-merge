@@ -5,10 +5,14 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/blackfinwebware/laravel-mail-merge/Check%20&%20fix%20styling?label=code%20style)](https://github.com/blackfinwebware/laravel-mail-merge/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/blackfinwebware/laravel-mail-merge.svg?style=flat-square)](https://packagist.org/packages/blackfinwebware/laravel-mail-merge)
  
-This provides a facility to merge email templates with objects in your system to produce customized emails to 
+This is still beta software. Please use at your own risk. This provides a facility to merge email templates with objects in your system to produce customized emails to 
 individuals or to definable groups. It differs from base Laravel email templating in that it enables you and/or your 
 users to maintain the email content for both repeatable event notification emails as well as for individualized group 
 announcements, and does so in a highly configurable way.
+
+## Laravel Framework Compatibility
+
+This has been developed against Laravel 8, but at this point and before getting CI in place, we believe it will work on Laravel from 5.x to 8.x. It does rely upon SwiftMailer currently, and we will be working on Laravel 9.x compatiblity and switching over to Symfony Mailer soon.
 
 ## Installation 
 
@@ -205,7 +209,7 @@ You can define an EmailTemplate named 'password_reset_request', where your messa
 And define in the config where to derive appropriate values for those general use macros:
 
 ```php
-$macros = ['general' => ['app_name' => env('APP_NAME', 'MyApp'),
+'macro_sets' = ['general' => ['app_name' => env('APP_NAME', 'MyApp'),
                          'primary_contact_email' => 'joe_user@example.com'],
                          'password_reset_request' => App\Mail\Merge\Macro\PasswordResetRequestMacroExpansionGuide::class];
 ```
