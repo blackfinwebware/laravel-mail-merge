@@ -1,0 +1,60 @@
+{
+    "name": "blackfinwebware/laravel-mail-merge",
+    "description": "Allows user to coalesce objects with templates to create a series of customized emails.",
+    "keywords": [
+        "Blackfin Webware",
+        "Laravel",
+        "Email",
+        "mail-merge",
+        "mailmerge"
+    ],
+    "homepage": "https://github.com/blackfinwebware/laravel-mail-merge",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tom Cowin",
+            "email": "tom.cowin@blackfin.biz",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1 || ^8.0",
+        "illuminate/contracts": "^8.73"
+    },
+    "require-dev": {
+        "nunomaduro/collision": "^5.10",
+        "orchestra/testbench": "^6.22",
+        "pestphp/pest": "^1.21",
+        "pestphp/pest-plugin-laravel": "^1.1",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "BlackfinWebware\\LaravelMailMerge\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BlackfinWebware\\LaravelMailMerge\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-f": "vendor/bin/phpunit --filter"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BlackfinWebware\\LaravelMailMerge\\ServiceProvider"
+            ],
+            "aliases": {
+                "MailMerge": "BlackfinWebware\\LaravelMailMerge\\Facade"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -1,0 +1,34 @@
+<?php
+
+namespace MailmergeNamespace\Distribution;
+
+use BlackfinWebware\LaravelMailMerge\Mail\Merge\Distribution\MergeDistribution;
+
+class DummyClass extends MergeDistribution
+{
+    protected $groupName = 'DummyClass';
+    //object in system that is the primary focus for this merge distribution
+    protected $nexusObject = 'DummyClass';
+
+    /**
+     * Returns a Collection of User objects that each have email and name attributes.
+     *
+     * @return array
+     */
+    public function getDistributionList(): Collection
+    {
+        return [];
+    }
+
+    /**
+     * When merging the messages and users, and trying to resolve the macros, this allows the process to map
+     * the email recipient(user) back to the object at the nexus that will allow for correct macro expansion.
+     *
+     * @param $user
+     * @return array
+     */
+    public function getNexusForUser($user): object
+    {
+        return [];
+    }
+}

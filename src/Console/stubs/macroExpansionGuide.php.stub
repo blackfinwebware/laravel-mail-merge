@@ -1,0 +1,38 @@
+<?php
+
+namespace MailmergeNamespace\Macro;
+
+use BlackfinWebware\LaravelMailMerge\Mail\Merge\Macro\ObjectMacroExpansionGuide;
+use BlackfinWebware\LaravelMailMerge\Utils\BlackfinUtils;
+use Illuminate\Support\Facades\Log;
+
+class DummyClass extends ObjectMacroExpansionGuide
+{
+    /**
+     * When creating your own MacroExpansionGuide, you'll need to populate these first three properties and the method
+     * expansions below.
+     * <i>macros</i> must contain a list of macros that this guide will replace, for eg., if the nexus object
+     * is foo, macros should contain strings like foo_name, foo_email, foo_registration_code, etc.
+     * <i>quickSearch</i> is optional - it may provide a shortcut so that this guide can quickly tell if it should be
+     * used on the email. In our example, we'd expect quickSearch to contain 'foo_' only.
+     * <i>requiredObjects</i> must list the snake case version of the nexus object - 'foo' in our example. The guide
+     * will verify that an instantiation of foo has been passed in before it tries to expand any macros.
+     * <i>expansions</i> must provide an associative array that will map the macros to their logical expansions, using
+     * either a static or dynamic expression.
+     * Location -- the guide in this example must be in config('mailmerge.namespace')\Macro but
+     * you can actually name the class whatever - Foo or FooMacroExpansionGuide, etc.
+     */
+    public $quickSearch = [];
+    public $macros = [];
+    public $requiredObjects = [];
+
+    /**
+     * The guide itself which specifies what each macro should be expanded to.
+     * For eg. ['users_email' => $user->email,
+     *          'membership_renewal_date' => Membership::where('user_id', $user->id)->first()->pluck('renewal_date')]
+     * @return array
+     */
+    public function expansions(){
+        return [];
+    }
+}
