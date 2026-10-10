@@ -13,6 +13,15 @@ use Illuminate\Support\Str;
 class LaravelMailMerge
 {
     /**
+     * A class name under config('mailmerge.namespace'), e.g. namespaced('Distribution\\Foo') gives
+     * App\Mail\Merge\Distribution\Foo, whether or not the configured namespace ends with a backslash.
+     */
+    public static function namespaced(string $relativeName): string
+    {
+        return rtrim((string) config('mailmerge.namespace'), '\\') . '\\' . ltrim($relativeName, '\\');
+    }
+
+    /**
      * Retrieve MergeDistribution group based upon groupName -- should be either specified in the config, or be
      * derivable given expected naming convention of App\Mail\Merge\Distribution\{GroupName}(MergeDistribution).
      *
@@ -27,7 +36,7 @@ class LaravelMailMerge
                 return $distributionClassName;
             }
         }
-        $distributionClassName = config('mailmerge.namespace') . 'Distribution\\' . BlackfinUtils::camelCase($groupName);
+        $distributionClassName = self::namespaced('Distribution\\' . BlackfinUtils::camelCase($groupName));
         if(class_exists($distributionClassName)) {
             return $distributionClassName;
         }
@@ -58,12 +67,12 @@ class LaravelMailMerge
                     return $groups[$nexusSlug];
                 }
             }
-            $className = config('mailmerge.namespace') . 'Macro\\' . $nexusObjectName . 'MacroExpansionGuide';
+            $className = self::namespaced('Macro\\' . $nexusObjectName . 'MacroExpansionGuide');
             if(class_exists($className)){
                 return $className;
             }
             else{
-                $className = config('mailmerge.namespace') . 'Macro\\' . $nexusObjectName;
+                $className = self::namespaced('Macro\\' . $nexusObjectName);
                 if(class_exists($className)){
                     return $className;
                 }
@@ -97,8 +106,11 @@ class LaravelMailMerge
                 throw new \Exception('Neither group nor recipients provided.');
             }
             $return = $mailMergeService->mergeAndSend($email->to, $objects);
-            if($return !== 0){
+            if($return !== 0 && !empty($return)){
                 $messages[] = $return;
+            }
+            else{
+                $success++;
             }
         }
         else{

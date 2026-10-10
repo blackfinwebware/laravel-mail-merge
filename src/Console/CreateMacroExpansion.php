@@ -35,9 +35,7 @@ class CreateMacroExpansion extends GeneratorCommand
 
     protected function getDefaultNamespace($rootNamespace)
     {
-        $namespace = config('mailmerge.namespace');
-        $mailmergeNamespace = str_replace(['App\\', 'app\\'], '', $namespace);
-        return $rootNamespace . '\\' . $mailmergeNamespace . '\Macro';
+        return \BlackfinWebware\LaravelMailMerge\LaravelMailMerge::namespaced('Macro');
     }
 
     public function handle()
@@ -57,7 +55,7 @@ class CreateMacroExpansion extends GeneratorCommand
 
         $content = file_get_contents($path);
 
-        $namespace = config('mailmerge.namespace');
+        $namespace = rtrim(config('mailmerge.namespace'), '\\');
         $content = str_replace('MailmergeNamespace', $namespace, $content);
 
         file_put_contents($path, $content);

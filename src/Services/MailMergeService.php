@@ -1,6 +1,7 @@
 <?php
 namespace BlackfinWebware\LaravelMailMerge\Services;
 
+use BlackfinWebware\LaravelMailMerge\LaravelMailMerge;
 use BlackfinWebware\LaravelMailMerge\Models\EmailTemplate;
 use BlackfinWebware\LaravelMailMerge\Utils\BlackfinUtils;
 use BlackfinWebware\LaravelMailMerge\Utils\ClassFinder;
@@ -36,7 +37,7 @@ class MailMergeService
     protected function tryAllExpansionGuides()
     {
         $parentMacroExpansionGuide = 'BlackfinWebware\LaravelMailMerge\Mail\Merge\Macro\ObjectMacroExpansionGuide';
-        $classes = ClassFinder::findRecursive(config('mailmerge.namespace') . '\Macro');
+        $classes = ClassFinder::findRecursive(LaravelMailMerge::namespaced('Macro'));
         foreach($classes as $className){
             $class = new \ReflectionClass($className);
             if($class->isSubclassOf($parentMacroExpansionGuide)){
@@ -62,7 +63,7 @@ class MailMergeService
      */
     protected function applyGeneralGuide()
     {
-        $appGeneralGuide = config('mailmerge.namespace') . '\Macro\GeneralMacroExpansionGuide';
+        $appGeneralGuide = LaravelMailMerge::namespaced('Macro\GeneralMacroExpansionGuide');
         $packageGeneralGuide = 'BlackfinWebware\LaravelMailMerge\Mail\Merge\Macro\GeneralMacroExpansionGuide';
         if(class_exists($appGeneralGuide)){
             $expansionGuide = new $appGeneralGuide($this->mutable, $this->objects);

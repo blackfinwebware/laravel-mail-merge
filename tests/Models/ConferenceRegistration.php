@@ -46,6 +46,6 @@ class ConferenceRegistration extends Model
 
 	public function __toString()
     {
-        return "Registration: {$this->member}::{$this->conference}::{$this->status}";
+        return "Registration: {$this->user_id}::{$this->conference}::{$this->status}";
     }
 }

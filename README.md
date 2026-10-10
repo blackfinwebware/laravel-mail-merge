@@ -12,7 +12,8 @@ announcements, and does so in a highly configurable way.
 
 ## Laravel Framework Compatibility
 
-This has been developed against Laravel 8, but at this point and before getting CI in place, we believe it will work on Laravel from 5.x to 8.x. It does rely upon SwiftMailer currently, and we will be working on Laravel 9.x compatiblity and switching over to Symfony Mailer soon.
+Version 1.x supports Laravel 10, 11 and 12 on PHP 8.1 or later (Laravel 11 and 12 need PHP 8.2), and is tested
+against each of them. Mail goes through Laravel's mailer (Symfony Mailer).
 
 ## Installation 
 
@@ -23,10 +24,9 @@ composer require blackfinwebware/laravel-mail-merge
 ```
 
 ### Migrations
-You'll want to publish and run the migrations with:
+The package loads its migration (the `mailmerge_email_templates` table) itself, so just run:
 
 ```bash
-php artisan vendor:publish --tag="laravel-mail-merge-migrations"
 php artisan migrate
 ```
 
@@ -258,8 +258,13 @@ with these may also be different.
 ## Testing
 
 ```bash
+composer install
 composer test
 ```
+
+The tests run the package in a bare Laravel app ([Orchestra Testbench](https://github.com/orchestral/testbench)) with
+an in-memory SQLite database. The app-side classes a real app would write (merge distributions and macro expansion
+guides in `App\Mail\Merge`) are in `tests/Fixtures/app`.
 
 ## Changelog
 

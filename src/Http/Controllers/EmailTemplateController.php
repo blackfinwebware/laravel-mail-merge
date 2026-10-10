@@ -42,7 +42,7 @@ class EmailTemplateController extends Controller
     public function create(Request $request)
     {
         $email = new EmailTemplate();
-        $groups = array_keys(config('mailmerge.groups'));
+        $groups = array_keys(config('mailmerge.groups') ?? []);
         return view('mailmerge::email_templates.create', [
             'email' => $email,
             'page_title' => 'Create Email Template',
@@ -127,8 +127,8 @@ class EmailTemplateController extends Controller
     public function edit(Request $request, $emailTemplateId)
     {
         $macros = $this->retrieveAvailableMacros();
-        $email = EmailTemplate::find($emailTemplateId);
-        $groups = array_keys(config('mailmerge.groups'));
+        $email = EmailTemplate::findOrFail($emailTemplateId);
+        $groups = array_keys(config('mailmerge.groups') ?? []);
         return view('mailmerge::email_templates.edit', [
             'page_title' => 'Edit Email Template',
             'email' => $email,
@@ -162,7 +162,8 @@ class EmailTemplateController extends Controller
     public function retrieveAvailableMacros() : Array
     {
         $macros = [];
-        $sets = config('mailmerge.macro_sets');
+        $general = [];
+        $sets = config('mailmerge.macro_sets') ?? [];
         $keys = array_keys($sets);
         foreach($keys as $key){
             if(strcasecmp($key, 'general') == 0){
@@ -218,7 +219,7 @@ class EmailTemplateController extends Controller
                 ->withInput();
         }
 
-        $email = EmailTemplate::find($emailTemplateId);
+        $email = EmailTemplate::findOrFail($emailTemplateId);
         $objects = [];
         if(empty($request->group) && empty($request->to) && (!empty($request->send) || !empty($request->testsend))){
             return redirect()->back()->withErrors('You must specify the recipient by selecting a Group or entering email(s) in the To field.');
@@ -279,7 +280,7 @@ class EmailTemplateController extends Controller
         $page_title = 'Clone Email Template';
         $original = EmailTemplate::findOrFail($id);
         $email = $original->replicate();
-        $groups = array_keys(config('mailmerge.groups'));
+        $groups = array_keys(config('mailmerge.groups') ?? []);
         $macros = $this->retrieveAvailableMacros();
 
         return view('mailmerge::email_templates.clone', compact('page_title','email', 'groups', 'macros'));
@@ -316,8 +317,11 @@ class EmailTemplateController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy(Request $request, EmailTemplate $email)
+    public function destroy(Request $request, $emailTemplateId)
     {
+        // By id: the resource route's parameter is {email_template}, so a parameter named $email was
+        // never bound, and an empty, unsaved template was "deleted" instead
+        $email = EmailTemplate::findOrFail($emailTemplateId);
         if ($email->delete()) {
             session()->flash('alert-info', 'Email successfully deleted');
         } else {

@@ -44,12 +44,12 @@ abstract class ObjectMacroExpansionGuide
      * @param string $startsWith
      * @return bool
      */
-    protected function containsMacro($macro, $strings, $startsWith = 'false'){
+    protected function containsMacro($macro, $strings, $startsWith = false){
         if($startsWith){
-            $needle = "<<${macro}";
+            $needle = "<<{$macro}";
         }
         else{
-            $needle = "<<${macro}>>";
+            $needle = "<<{$macro}>>";
         }
         if(BlackfinUtils::stringContains($strings, $needle)){
             return true;
@@ -66,11 +66,9 @@ abstract class ObjectMacroExpansionGuide
      * @param string $startsWith
      * @return bool
      */
-    protected function containsMacros($macroString, $elements = 'message', $startsWith = 'false'){
-        if($elements == 'message'){
-            $searchSubjects = array($this->email->message);
-        }
-        elseif($elements == 'both'){
+    protected function containsMacros($macroString, $elements = 'message', $startsWith = false){
+        $searchSubjects = array($this->email->message);
+        if($elements == 'both'){
             $searchSubjects = array($this->email->message,
                                     $this->email->subject);
         }
@@ -120,10 +118,10 @@ abstract class ObjectMacroExpansionGuide
             default :           $fields = ['message'];
         }
         if(!$literal){
-            $macroString = "<<${macroString}>>";
+            $macroString = "<<{$macroString}>>";
         }
         foreach($fields as $field){
-            $this->email->$field = str_replace($macroString, $replacementText, $this->email->{$field});
+            $this->email->$field = str_replace($macroString, (string) $replacementText, (string) $this->email->{$field});
             if($this->debug){
                 Log::debug(__METHOD__ . " replacing $macroString with $replacementText in $field");
             }

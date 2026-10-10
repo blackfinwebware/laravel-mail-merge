@@ -13,6 +13,14 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      *
      * @return void
      */
+    /**
+     * The package's config defaults, for any keys the app's published config/mailmerge.php leaves out.
+     */
+    public function register()
+    {
+        $this->mergeConfigFrom(__DIR__.'/../config/mailmerge.php', 'mailmerge');
+    }
+
     public function boot()
     {
         $this->publishes([

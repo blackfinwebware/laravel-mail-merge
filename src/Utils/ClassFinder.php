@@ -33,6 +33,31 @@ class ClassFinder
      */
     protected static function translateNamespacePath(string $namespace): string
     {
+        $namespace = trim($namespace, '\\');
+
+        // Where Composer's PSR-4 autoloading puts the namespace (the longest matching prefix wins)
+        $best = '';
+        $bestPath = '';
+        foreach (\Composer\Autoload\ClassLoader::getRegisteredLoaders() as $loader) {
+            foreach ($loader->getPrefixesPsr4() as $prefix => $dirs) {
+                $prefix = rtrim($prefix, '\\');
+                if (($namespace === $prefix || str_starts_with($namespace, $prefix . '\\')) && strlen($prefix) > strlen($best)) {
+                    $relative = str_replace('\\', DIRECTORY_SEPARATOR, substr($namespace, strlen($prefix)));
+                    foreach ($dirs as $dir) {
+                        if ($path = realpath($dir . $relative)) {
+                            $best = $prefix;
+                            $bestPath = $path;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if ($bestPath !== '') {
+            return $bestPath;
+        }
+
+        // Otherwise the Laravel convention: App\Foo is in app/Foo under the base path
         //Laravel call to get document root
         $rootPath = base_path() . DIRECTORY_SEPARATOR;
         //adapt from namespace to filesystem path Laravel convention

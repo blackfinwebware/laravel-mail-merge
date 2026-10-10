@@ -65,7 +65,10 @@
          */
         public static function emailStringToArray($emailAddresses)
         {
-            if(strstr($emailAddresses, ',') || strstr($emailAddresses, PHP_EOL)){
+            if(is_array($emailAddresses) || $emailAddresses === null){
+                return $emailAddresses ?? '';
+            }
+            if(strstr($emailAddresses, ',') || strstr($emailAddresses, "\n")){
                 return preg_split("/[\s*\r\n,]+/", $emailAddresses, -1, PREG_SPLIT_NO_EMPTY);
             }
             return $emailAddresses;
@@ -98,7 +101,8 @@
                         $data['bcc'] = array_merge($email->bcc, [config('mailmerge.primary_admin_email')]);
                     }
                     else{
-                        $data['bcc'] = array_merge(self::emailStringToArray($email->bcc), [config('mailmerge.primary_admin_email')]);
+                        // (array): a single address comes back as a string
+                        $data['bcc'] = array_merge((array) self::emailStringToArray($email->bcc), [config('mailmerge.primary_admin_email')]);
                     }
                 }
                 else{
@@ -113,7 +117,7 @@
                 $data['bcc'] = '';
             }
             if (!$email->subject){
-                $data['subject'] = config('app.name') . ' on ' . $hostname . ' on ' . strftime("%b %e %Y", strtotime("today"));
+                $data['subject'] = config('app.name') . ' on ' . $hostname . ' on ' . date('M j Y');
             }
             else{
                 $data['subject'] = self::replaceSmartQuotes($email->subject);
@@ -122,7 +126,8 @@
             $data['customHeaders'] = $customHeaders;
 
             if(empty($data['from'])){
-                $data['from'] = env('MAIL_FROM_ADDRESS');
+                // config(), not env(): env() returns null once the configuration is cached
+                $data['from'] = config('mail.from.address');
             }
 
             if($email->replyto){
@@ -131,26 +136,33 @@
 
             try{
                 if(config('mailmerge.use_queues')){
-                    Mail::to($data['to'])->queue(new BasicQueueableMessage($data));
+                    Mail::to($data['to'])
+                        ->cc($data['cc'])
+                        ->bcc($data['bcc'])
+                        ->queue(new BasicQueueableMessage($data));
                 }
                 else{
-                    Mail::to($data['to'])->send(new BasicMessage($data));
+                    Mail::to($data['to'])
+                        ->cc($data['cc'])
+                        ->bcc($data['bcc'])
+                        ->send(new BasicMessage($data));
                 }
-            } catch(\Exception $e){
-                Log::error(__METHOD__ . ' error encountered ' . $e->getMessage() . ' when trying to send email ' . $e->getTraceAsString());
-                throw new \Exception($e->getMessage());
-            }
-            if (count($failures = Mail::failures()) < 1){
                 $message = 0;//"Mail sent successfully.";
-                if(config('mailmerge.debug')){
-                    Log::debug(__METHOD__ . ' mail sent to : ' . $data['to']);
-                }
+            } catch(\Exception $e){
+                $message = "Problems sending mail to " . self::addressList($data['to']);
+                Log::error(__METHOD__ . ' error encountered ' . $e->getMessage() . ' when trying to send email ' . $e->getTraceAsString());
+               // throw new \Exception($e->getMessage());
             }
-            else{
-                $message = "Problems sending mail to " . implode(", ", $failures);
-                Log::error(__METHOD__ . ' error encountered when trying to send email: ' . $message);
+            if(config('mailmerge.debug')){
+                Log::debug(__METHOD__ . ' mail sent to : ' . self::addressList($data['to']));
             }
             return $message;
+        }
+
+        /** One or several addresses, as text for a message or the log. */
+        protected static function addressList($addresses): string
+        {
+            return is_array($addresses) ? implode(', ', $addresses) : (string) $addresses;
         }
 
         public static function stringBeginsWith($haystack, $needle)
@@ -200,10 +212,8 @@
          */
         public static function getClassName(String $classname)
         {
-            if ($pos = strrpos($classname, '\\')){
-                return substr($classname, $pos + 1);
-            }
-            return $pos;
+            $pos = strrpos($classname, '\\');
+            return $pos === false ? $classname : substr($classname, $pos + 1);
         }
 
 

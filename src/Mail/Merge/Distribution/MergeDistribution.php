@@ -23,11 +23,11 @@ abstract class MergeDistribution
     /**
      * Returns a Collection of User objects that each have email and name attributes.
      *
-     * @return array
+     * @return Collection
      */
     public function getDistributionList(): Collection
     {
-        return [];
+        return new Collection();
     }
 
     /**

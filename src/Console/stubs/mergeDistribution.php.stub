@@ -3,6 +3,7 @@
 namespace MailmergeNamespace\Distribution;
 
 use BlackfinWebware\LaravelMailMerge\Mail\Merge\Distribution\MergeDistribution;
+use Illuminate\Database\Eloquent\Collection;
 
 class DummyClass extends MergeDistribution
 {
@@ -13,11 +14,11 @@ class DummyClass extends MergeDistribution
     /**
      * Returns a Collection of User objects that each have email and name attributes.
      *
-     * @return array
+     * @return Collection
      */
     public function getDistributionList(): Collection
     {
-        return [];
+        return new Collection();
     }
 
     /**
@@ -25,10 +26,10 @@ class DummyClass extends MergeDistribution
      * the email recipient(user) back to the object at the nexus that will allow for correct macro expansion.
      *
      * @param $user
-     * @return array
+     * @return object
      */
     public function getNexusForUser($user): object
     {
-        return [];
+        return (object) [];
     }
 }
