@@ -12,8 +12,8 @@ announcements, and does so in a highly configurable way.
 
 ## Laravel Framework Compatibility
 
-Version 1.x supports Laravel 10, 11 and 12 on PHP 8.1 or later (Laravel 11 and 12 need PHP 8.2), and is tested
-against each of them. Mail goes through Laravel's mailer (Symfony Mailer).
+Version 1.x supports Laravel 10, 11, 12 and 13 on PHP 8.1 or later (Laravel 11 and 12 need PHP 8.2, Laravel 13
+PHP 8.3), and is tested against each of them (1.0 supports Laravel 10-12). Mail goes through Laravel's mailer (Symfony Mailer).
 
 ## Installation 
 

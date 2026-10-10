@@ -2,6 +2,12 @@
 
 All notable changes to `blackfinwebware/laravel-mail-merge` will be documented in this file.
 
+## 1.1.0 - 2026-10-10
+
+- Laravel 13 support (PHP 8.3+); CI tests Laravel 10-13 on each supported PHP version, at the lowest and
+  latest allowed dependency versions.
+- Dev: Testbench 8, 9.2+, 10 or 11; PHPUnit 10.5-13 (Testbench 9.0 and 9.1 can't run the tests on Laravel 11).
+
 ## 1.0.0 - 2026-10-10
 
 Laravel 10, 11 and 12 (PHP 8.1+); a full test suite.
