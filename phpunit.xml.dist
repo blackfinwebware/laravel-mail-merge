@@ -7,7 +7,6 @@
          failOnWarning="true"
          failOnRisky="true"
          failOnDeprecation="true"
-         failOnPhpunitDeprecation="false"
          failOnEmptyTestSuite="true"
          displayDetailsOnTestsThatTriggerDeprecations="true"
          displayDetailsOnTestsThatTriggerWarnings="true"

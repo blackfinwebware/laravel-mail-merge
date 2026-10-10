@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -41,7 +41,10 @@ jobs:
           coverage: none
 
       - name: Install dependencies
+        # Every Laravel 10 and 11 release has an unpatched security advisory (both are end of life), and
+        # Composer refuses those by default; allow them here so the versions 1.x supports are still tested
         run: |
+          composer config audit.block-insecure false
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --dev --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 

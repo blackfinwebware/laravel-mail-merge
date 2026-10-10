@@ -6,7 +6,12 @@ All notable changes to `blackfinwebware/laravel-mail-merge` will be documented i
 
 - Laravel 13 support (PHP 8.3+); CI tests Laravel 10-13 on each supported PHP version, at the lowest and
   latest allowed dependency versions.
-- Dev: Testbench 8, 9.2+, 10 or 11; PHPUnit 10.5-13 (Testbench 9.0 and 9.1 can't run the tests on Laravel 11).
+- Dev: Testbench 8, 9.2+, 10 or 11; PHPUnit 10.5-13 (Testbench 9.0 and 9.1 can't run the tests on Laravel 11);
+  `minimum-stability` is `stable`, so the lowest-version CI runs test real releases (it was `dev`, which picked a
+  moving 11.x development snapshot).
+- Every Laravel 10 and 11 release now carries an unpatched security advisory (both are end of life), and
+  Composer 2.9+ refuses to install them by default. 1.x still supports them, and CI tests them with Composer's
+  insecure-version block turned off; prefer Laravel 12 or 13.
 
 ## 1.0.0 - 2026-10-10
 

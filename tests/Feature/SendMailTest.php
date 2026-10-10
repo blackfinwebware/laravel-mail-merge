@@ -144,8 +144,9 @@ class SendMailTest extends TestCase
     public function test_a_failure_is_reported_and_logged_not_thrown()
     {
         $this->inProduction();
-        Log::spy();
+        // The mail mock first: building it can log a deprecation (old Mockery on PHP 8.4), which a log spy can't take
         Mail::shouldReceive('to')->andThrow(new \RuntimeException('Connection refused'));
+        Log::spy();
 
         $result = BlackfinUtils::sendMail($this->email(['to' => 'ada@example.com, grace@example.com']));
 
